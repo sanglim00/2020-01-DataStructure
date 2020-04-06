@@ -48,33 +48,28 @@ int main() {
 	cout << "3) Sparse matrix of A -row major" << endl;
 
 	list<int> RClist;
-	list<int> Elist;
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
 			if (Narray[i][j] != 0) {
 				RClist.push_back(i);
 				RClist.push_back(j);
-				Elist.push_back(Narray[i][j]);
+				RClist.push_back(Narray[i][j]);
 			}
 		}
 	}
-	/*
-	//리스트 잘 추가되었는지 확인하는 코드
-	for (int i = 0; i < RClist.size(); i++) {
-		cout << RClist.front() << endl;
-		RClist.pop_front();
+	int RCarray[8][3];
+	int E = 0;
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 3; j++) {
+			RCarray[i][j] = RClist.front();
+			RClist.pop_front();
+			E++;
+ 		}
 	}
-	for (int i = 0; i < Elist.size(); i++) {
-		cout << Elist.front() << endl;
-		Elist.pop_front();
-	}*/
-
-	/*int n = 0;
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 8; j++) {
-			if()
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 3; j++) {
+			cout << RCarray[i][j] << " ";
 		}
-	}*/
-	
+		cout << endl;
+	}
 }
-
