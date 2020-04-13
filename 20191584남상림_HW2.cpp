@@ -119,40 +119,40 @@ void postfix(char* buffer) {
 		cout << stack.pop();
 }
 
-//int eval(char* buffer) {
-//	
-//	Stack stack(100);
-//
-//	int op1, op2;
-//	int i = 0;
-//	
-//	while (buffer[i] != '\0') {
-//		if (Priority(buffer[i]) == 0) {
-//			stack.push(buffer[i]-'0');
-//		}	
-//		else {
-//			op2 = stack.pop();
-//			op1 = stack.pop();
-//
-//			switch (buffer[i]) {
-//			case'+':
-//				stack.push(op1 + op2);
-//				break;
-//			case'-':
-//				stack.push(op1 - op2);
-//				break;
-//			case'*':
-//				stack.push(op1 * op2);
-//				break;
-//			case'/':
-//				stack.push(op1 / op2);
-//				break;
-//			}
-//		}
-//		i++;
-//	}
-//	return stack.pop();
-//}
+int eval(char* buffer) {
+	
+	Stack stack(100);
+
+	int op1, op2;
+	int i = 0;
+	
+	while (buffer[i] != '\0') {
+		if (Priority(buffer[i]) == 0) {
+			stack.push(buffer[i]-'0');
+		}	
+		else {
+			op2 = stack.pop();
+			op1 = stack.pop();
+
+			switch (buffer[i]) {
+			case'+':
+				stack.push(op1 + op2);
+				break;
+			case'-':
+				stack.push(op1 - op2);
+				break;
+			case'*':
+				stack.push(op1 * op2);
+				break;
+			case'/':
+				stack.push(op1 / op2);
+				break;
+			}
+		}
+		i++;
+	}
+	return stack.pop();
+}
 
 int main() {
 	Stack stack(100);
@@ -163,8 +163,8 @@ int main() {
 	while (infile.getline(buffer, 80)) {
 		cout << "Enter data ( infix form ) : " << buffer << endl;
 	 }
-	cout << "Conversion ( postfix form ) : " << endl;
+	cout << "Conversion ( postfix form ) : ";
 	postfix(buffer);
-	cout << "Result : " << endl;
-	//eval(buffer);
+	cout << "Result : " << eval(buffer) << endl;
+	
 }
