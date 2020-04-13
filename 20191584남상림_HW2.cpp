@@ -98,18 +98,14 @@ void postfix(char* buffer) {
 			stack.push(buffer[i]);
 			break;
 		case 2:
-			if (Priority(buffer[i]) >= Priority(stack.stacktop()))
+		case 3:
+			if (Priority(buffer[i]) <= Priority(stack.stacktop()))
 				stack.push(buffer[i]);
 			else {
-				stack.pop();
 				cout << stack.stacktop();
+				stack.pop();
 				stack.push(buffer[i]);
 			}
-		case 3:
-			while (stack.stacktop() != '(')
-				cout << stack.pop();
-			stack.push(buffer[i]);
-			break;
 		case 4:
 			while (stack.stacktop() != '(') {
 				cout << stack.stacktop();
@@ -123,39 +119,40 @@ void postfix(char* buffer) {
 		cout << stack.pop();
 }
 
-int eval(char* buffer) {
-	
-	Stack stack(100);
-
-	int op1, op2;
-	int i = 0;
-	
-	while (buffer[i] != '\0') {
-		if (Priority(buffer[i])==2 || Priority(buffer[i]) == 3)
-			stack.push(buffer[i]);
-		else {
-			op2 = stack.pop();
-			op1 = stack.pop();
-
-			switch (buffer[i]) {
-			case'+':
-				stack.push(op1 + op2);
-				break;
-			case'-':
-				stack.push(op1 - op2);
-				break;
-			case'*':
-				stack.push(op1 * op2);
-				break;
-			case'/':
-				stack.push(op1 / op2);
-				break;
-			}
-		}
-		i++;
-	}
-	return stack.pop();
-}
+//int eval(char* buffer) {
+//	
+//	Stack stack(100);
+//
+//	int op1, op2;
+//	int i = 0;
+//	
+//	while (buffer[i] != '\0') {
+//		if (Priority(buffer[i]) == 0) {
+//			stack.push(buffer[i]-'0');
+//		}	
+//		else {
+//			op2 = stack.pop();
+//			op1 = stack.pop();
+//
+//			switch (buffer[i]) {
+//			case'+':
+//				stack.push(op1 + op2);
+//				break;
+//			case'-':
+//				stack.push(op1 - op2);
+//				break;
+//			case'*':
+//				stack.push(op1 * op2);
+//				break;
+//			case'/':
+//				stack.push(op1 / op2);
+//				break;
+//			}
+//		}
+//		i++;
+//	}
+//	return stack.pop();
+//}
 
 int main() {
 	Stack stack(100);
@@ -169,5 +166,5 @@ int main() {
 	cout << "Conversion ( postfix form ) : " << endl;
 	postfix(buffer);
 	cout << "Result : " << endl;
-	eval(buffer);
+	//eval(buffer);
 }
