@@ -124,6 +124,8 @@ int CharToInt(char buffer) {
         return 3;
     else if (buffer == '/')
         return 4;
+    else
+        return 0;
 }
 
 int eval(char* Earray) {
@@ -133,10 +135,11 @@ int eval(char* Earray) {
     int i = 0;
     int op1, op2;
     while (Earray[i] != '\0') { 
-        if (Earray[i] == '+' || Earray[i] == '-' || Earray[i] == '*' || Earray[i] == '/') {
-            stack.push(Earray[i]);
-        }
-        else {
+        switch(CharToInt(Earray[i])){
+        case 1:
+        case 2:
+        case 3:
+        case 4:
             op2 = stack.pop();
             op1 = stack.pop();
             switch (CharToInt(Earray[i])) {
@@ -153,6 +156,11 @@ int eval(char* Earray) {
                 stack.push(op1 / op2);
                 break;
             }
+        case 0:
+            stack.push(Earray[i]);
+            break;
+        default:
+            break;
         }
         i++;
      } 
@@ -176,5 +184,5 @@ int main() {
         cout << "Result : ";
         cout << eval(Earray) << endl;
      }
- 
+
 }
