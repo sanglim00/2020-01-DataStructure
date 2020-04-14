@@ -2,13 +2,13 @@
 //HomeWork : HW2
 //Name : Nam Sang Lim
 // ID : 20191584
-// Program Description : Hw2 Infix-to-Postfix conversion & Evaluation 
-//Algorithm : 
-//                    
-//                    
-// Variable : 
-//                 
-//          
+// Program Description : Hw2 Infix-to-Postfix conversion & Evaluation
+//Algorithm :
+//
+//
+// Variable :
+//
+//
 /////////////////////////////////////////////////////////////
 
 #include <iostream>
@@ -18,34 +18,40 @@
 using namespace std;
 
 class Stack {
-public:
 private:
-    char* stack;
+    int* stack;
     int top;
-    int StackSize;
+    const int size;
 public:
-    Stack(int SSize) {
-        stack = new char[SSize];
-        StackSize = SSize;
-        top = -1;
-    }
-    void push(char buffer);
+    Stack(int size);
+    void push(int val);
     char pop();
     bool isEmpty();
     bool isFull();
     int stacktop();
+    int get_top();
     void displayStack();
 };
 
-void Stack::push(char buffer) {
+Stack stack(100);
+char Earray[100] = {};
+
+Stack::Stack(int size) :size(size) {
+    stack = new int[size];
+    top = -1;
+}
+
+void Stack::push(int val) {
     if (isFull())
         cout << "Stack is Full" << endl;
-    else
-        stack[++top] = buffer;
+    else {
+        ++top;
+        stack[top] = val;
+    }
 }
 char Stack::pop() {
     if (!isEmpty())
-        return stack[--top];
+        return stack[top--];
 }
 bool Stack::isEmpty() {
     if (top == -1)
@@ -54,7 +60,7 @@ bool Stack::isEmpty() {
         return false;
 }
 bool Stack::isFull() {
-    if (top == StackSize - 1)
+    if (top == size - 1)
         return true;
     else
         return false;
@@ -62,111 +68,68 @@ bool Stack::isFull() {
 int Stack::stacktop() {
     return stack[top];
 }
+int Stack::get_top() {
+    return top;
+}
 void Stack::displayStack() {
     int sp = top;
-    while (sp != -1) {
-        cout << stack[sp--] << endl;
+    if (isEmpty())
+        cout << "Stack is Empty" << endl;
+    else {
+        sp = top;
+        while (sp != -1) {
+            cout << stack[sp];
+            --sp;
+        }cout << endl;
     }
 }
 
-int Priority(char oprt) {
-    if (oprt == '(')
-        return 1;
-    else if (oprt == '*' || oprt == '/')
-        return 2;
-    else if (oprt == '+' || oprt == '-')
-        return 3;
-    else if (oprt == ')')
-        return 4;
-    else
-        return 0;
-}
-
-void postfix(char* buffer) {
-
-    Stack stack(100);
-    int i = 0;
-
-    while (buffer[i] != '\0') {
-        switch (Priority(buffer[i])) {
-        case 0:
-            cout << buffer[i];
-            break;
-        case 1:
+void postfix(char* buffer, int len) {
+    int num = 0;
+    for (int i = 0; i < len; i++) {
+        if( buffer[i] == '(')
             stack.push(buffer[i]);
-            break;
-        case 2:
-        case 3:
-            while (Priority(buffer[i]) >= Priority(stack.stacktop())) {
-                cout << stack.stacktop();
-                stack.pop();
-             }
-                stack.push(buffer[i]);
-            
-        case 4:
+        else if (buffer[i] == '+' || buffer[i] == '-') {
+                while (stack.get_top() >= 0 && stack.stacktop() != '(') {
+                Earray[num++] = stack.pop();
+                 }
+            stack.push(buffer[i]);
+        }
+        else if (buffer[i] == '*' || buffer[i] == '/') {
+                while (stack.get_top() >= 0 && stack.stacktop() != '(' && stack.stacktop() != '-' && stack.stacktop() != '+') {
+                Earray[num++] = stack.pop();
+                 }
+            stack.push(buffer[i]);
+        }
+        else if (buffer[i] == ')') {
             while (stack.stacktop() != '(') {
-                cout << stack.stacktop();
-                stack.pop();
-            }
-            stack.pop();
-            break;
-        default:
-            break;
+                Earray[num++] = stack.pop();
+             }
+             stack.pop();
         }
-        i++;
-    }while (!stack.isEmpty())
-        cout << stack.pop();
-}
-
-int eval(char* buffer) {
-
-    Stack stack(100);
-
-    int op1, op2;
-    int i = 0;
-
-    while (buffer[i] != '\0') {
-        if (Priority(buffer[i]) == 0) {
-            stack.push(buffer[i] - '0');
-        }
-        else {
-            op2 = stack.pop();
-            op1 = stack.pop();
-
-            switch (buffer[i]) {
-            case'+':
-                stack.push(op1 + op2);
-                break;
-            case'-':
-                stack.push(op1 - op2);
-                break;
-            case'*':
-                stack.push(op1 * op2);
-                break;
-            case'/':
-                stack.push(op1 / op2);
-                break;
-            default:
-                break;
-            }
-        }
-        i++;
+        else
+            Earray[num++] = buffer[i];
     }
-    return stack.pop();
+    while (!stack.isEmpty()) {
+        Earray[num++] = stack.pop();
+     }
 }
+
 
 int main() {
-    Stack stack(100);
+    int len;
 
     char buffer[10];
 
     ifstream infile("hw2.txt");
 
     while (infile.getline(buffer, 80)) {
+        len = strlen(buffer);
         cout << "Enter data ( infix form ) : " << buffer << endl;
         cout << "Conversion ( postfix form ) : ";
-        postfix(buffer);
+        postfix(buffer, len);
+        int i = 0;
+        while (Earray[i] != '\0') cout << Earray[i++];
         cout << endl;
-        cout << "Result : " << eval(buffer) << endl;
     }
 }
