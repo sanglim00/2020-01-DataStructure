@@ -21,7 +21,6 @@ Stack Estack : postfix를 계산해주기 위해 만든 스택이다. char형 �
  len : buffer속 요소의 길이 만큼 포문을 돌리기 위해서 선언한 int 형 변수이다.
  num : Earray의 인덱스를 결정하는 변수
 **********************************************/
-
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -44,7 +43,6 @@ public:
     void displayStack();
 };
 
-Stack stack(100);
 char Earray[100] = {};
 
 Stack::Stack(int size) :size(size) {
@@ -96,34 +94,35 @@ void Stack::displayStack() {
 }
 
 void postfix(char* buffer, int len) {
+    Stack stack(100);
     int num = 0;
     for (int i = 0; i < len; i++) {
-        if( buffer[i] == '(')
+        if (buffer[i] == '(')
             stack.push(buffer[i]);
         else if (buffer[i] == '+' || buffer[i] == '-') {
-                while (stack.get_top() >= 0 && stack.stacktop() != '(') {
+            while (stack.get_top() >= 0 && stack.stacktop() != '(') {
                 Earray[num++] = stack.pop();
-                 }
+            }
             stack.push(buffer[i]);
         }
         else if (buffer[i] == '*' || buffer[i] == '/') {
-                while (stack.get_top() >= 0 && stack.stacktop() != '(' && stack.stacktop() != '-' && stack.stacktop() != '+') {
+            while (stack.get_top() >= 0 && stack.stacktop() != '(' && stack.stacktop() != '-' && stack.stacktop() != '+') {
                 Earray[num++] = stack.pop();
-                 }
+            }
             stack.push(buffer[i]);
         }
         else if (buffer[i] == ')') {
             while (stack.stacktop() != '(') {
                 Earray[num++] = stack.pop();
-             }
-             stack.pop();
+            }
+            stack.pop();
         }
         else
             Earray[num++] = buffer[i];
     }
     while (!stack.isEmpty()) {
         Earray[num++] = stack.pop();
-     }
+    }
 }
 
 int CharToInt(char buffer) {
@@ -141,41 +140,47 @@ int CharToInt(char buffer) {
 
 int eval(char* Earray) {
 
-    Stack Estack(100);
+    Stack stack(100);
 
     int i = 0;
     int op1, op2;
-    while (Earray[i] != '\0') { 
-        switch(CharToInt(Earray[i])){
+    while (Earray[i] != '\0') {
+        switch (CharToInt(Earray[i])) {
         case 1:
         case 2:
         case 3:
         case 4:
-            op2 = Estack.pop();
-            op1 = Estack.pop();
+            op2 = stack.pop() - '0';
+            op1 = stack.pop() - '0';
+            int value;
             switch (CharToInt(Earray[i])) {
             case 1:
-                Estack.push(op1 + op2);
+                value = op1 + op2;
+                stack.push(value);
                 break;
             case 2:
-                Estack.push(op1 - op2);
+                value = op1 - op2;
+                stack.push(value);
                 break;
             case 3:
-                Estack.push(op1 * op2);
+                value = op1 * op2;
+                stack.push(value);
                 break;
             case 4:
-                Estack.push(op1 / op2);
+                value = op1 / op2;
+                stack.push(value);
                 break;
             }
+            break;
         case 0:
-            Estack.push(Earray[i]);
+            stack.push(Earray[i]);
             break;
         default:
             break;
         }
         i++;
-     } 
-     return Estack.pop();
+    }
+    return stack.pop();
 }
 int main() {
     int len;
@@ -194,7 +199,7 @@ int main() {
         cout << endl;
         cout << "Result : ";
         cout << eval(Earray) << endl;
-     }
-    
-     
+    }
+
+    return 0;
 }
