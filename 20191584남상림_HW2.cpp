@@ -115,7 +115,49 @@ void postfix(char* buffer, int len) {
      }
 }
 
+int CharToInt(char buffer) {
+    if (buffer == '+')
+        return 1;
+    else if (buffer == '-')
+        return 2;
+    else if (buffer == '*')
+        return 3;
+    else if (buffer == '/')
+        return 4;
+}
 
+int eval(char* Earray) {
+
+    Stack stack(100);
+
+    int i = 0;
+    int op1, op2;
+    while (Earray[i] != '\0') { 
+        if (Earray[i] == '+' || Earray[i] == '-' || Earray[i] == '*' || Earray[i] == '/') {
+            stack.push(Earray[i]);
+        }
+        else {
+            op2 = stack.pop();
+            op1 = stack.pop();
+            switch (CharToInt(Earray[i])) {
+            case 1:
+                stack.push(op1 + op2);
+                break;
+            case 2:
+                stack.push(op1 - op2);
+                break;
+            case 3:
+                stack.push(op1 * op2);
+                break;
+            case 4:
+                stack.push(op1 / op2);
+                break;
+            }
+        }
+        i++;
+     } 
+     return stack.pop();
+}
 int main() {
     int len;
 
@@ -131,5 +173,8 @@ int main() {
         int i = 0;
         while (Earray[i] != '\0') cout << Earray[i++];
         cout << endl;
-    }
+        cout << "Result : ";
+        cout << eval(Earray) << endl;
+     }
+ 
 }
