@@ -1,15 +1,26 @@
-//////////////////////////////////////////////////////////////
-//HomeWork : HW2
-//Name : Nam Sang Lim
-// ID : 20191584
-// Program Description : Hw2 Infix-to-Postfix conversion & Evaluation
-//Algorithm :
-//
-//
-// Variable :
-//
-//
-/////////////////////////////////////////////////////////////
+/*********************************************
+ HomeWork : HW2
+ Name : Nam Sang Lim
+ ID : 20191584
+ Program Description : Hw2 Infix-to-Postfix conversion & Evaluation
+Algorithm : hw2.txt 파일에서 수식데이터를 가져와 infix를 postfix로 바꿔준다.
+                    바꿔준 postfix를 출력한 후 이를 다시 eval로 계산하여 최종 계산한 결과값을 출력한다.
+ Variable : 
+ Stack stack : infix를 postfix로 바꿔줄때 사용하는 스택으로 연산자 우선순위를 정해서 buffer[i] 값을 push와 pop을 반복한다.
+                       반복한 값들을 Earray에 차곡차곡 담아 main함수에서 순서대로 출력한다.
+                       연산자 우선순위 : *, / > +, - > ( 
+                       ( 가 나오면 무조건 push 해준다.
+                       +,- 가 나오면 top이 0 이상이고 ( 가 아니면 스택 top값을 Earray에 pop하고 buffer[i]를 push해준다.
+                       *, / 가 나오면 top이 0 이상이고 (, +, - 가 아니면 스택 top값을  Earray에 pop하고 buffer[i]를 push해준다.
+                       )가 나오면 스택에서 ( 를 만날 때까지 계속 Earray 에 pop 한다. 
+                       숫자는 바로 Earray에 넣어준다.
+Stack Estack : postfix를 계산해주기 위해 만든 스택이다. char형 정수를 int로 받기위해 CharToInt함수를 거처 온 결과값을
+                       switch 문으로 계산하여 연산자가 나왔을 때 두 수를 계산해서 스택에 push해주기를 반복한다
+                       최종적으로 스택에 남은 값이 결과이다. 이를 pop해서 return 해준다.
+ Earray : infix를 postfix로 바꾸는 과정에서 순서대로 값을 담는 배열
+ len : buffer속 요소의 길이 만큼 포문을 돌리기 위해서 선언한 int 형 변수이다.
+ num : Earray의 인덱스를 결정하는 변수
+**********************************************/
 
 #include <iostream>
 #include <fstream>
@@ -130,7 +141,7 @@ int CharToInt(char buffer) {
 
 int eval(char* Earray) {
 
-    Stack stack(100);
+    Stack Estack(100);
 
     int i = 0;
     int op1, op2;
@@ -140,31 +151,31 @@ int eval(char* Earray) {
         case 2:
         case 3:
         case 4:
-            op2 = stack.pop();
-            op1 = stack.pop();
+            op2 = Estack.pop();
+            op1 = Estack.pop();
             switch (CharToInt(Earray[i])) {
             case 1:
-                stack.push(op1 + op2);
+                Estack.push(op1 + op2);
                 break;
             case 2:
-                stack.push(op1 - op2);
+                Estack.push(op1 - op2);
                 break;
             case 3:
-                stack.push(op1 * op2);
+                Estack.push(op1 * op2);
                 break;
             case 4:
-                stack.push(op1 / op2);
+                Estack.push(op1 / op2);
                 break;
             }
         case 0:
-            stack.push(Earray[i]);
+            Estack.push(Earray[i]);
             break;
         default:
             break;
         }
         i++;
      } 
-     return stack.pop();
+     return Estack.pop();
 }
 int main() {
     int len;
@@ -184,5 +195,6 @@ int main() {
         cout << "Result : ";
         cout << eval(Earray) << endl;
      }
-
+    
+     
 }
