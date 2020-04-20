@@ -30,7 +30,7 @@ int top = -1;
 int maxSize = 10;
 element stack[10];
 
-bool isEmpty(int top) {
+bool isEmpty() {
     if (top == -1) return true;
     else return false;
 }
@@ -38,15 +38,14 @@ bool isFull() {
     if (top == maxSize - 1) return true;
     else return false;
 }
-void push(int val) {
+void push(int a, int b,  int c) {
     if (!isFull())
-        stack[++top] = val;
+        stack[++top] = {a, b, c};
     else cout << "Stack is Full" << endl;
 }
-void pop() {
-    if (!isEmpty(top))
-        cout << stack[top--] << endl;
-    else cout << "Stack is Empty" << endl;
+int  pop() {
+    if (!isEmpty())
+        return stack[top--];
 }
 
 void miroPath(offsets move[]) {
@@ -61,7 +60,7 @@ void miroPath(offsets move[]) {
     int exit_row = 5, exit_col = 5;
 
     while (!isEmpty && !found) {
-       // position = delete(&top);
+        position = pop(&top);
         row = position.row;
         col = position.col;
         dir = position.dir;
@@ -75,7 +74,7 @@ void miroPath(offsets move[]) {
                 mark[next_row][next_col] = 1;
                 position = { row, col, ++dir };
 
-                push(position.dir);
+                push(position.row, position.col, position.dir);
 
                 row = next_row; col = next_col; dir = 0;
             }
