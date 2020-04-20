@@ -24,19 +24,6 @@ int top = -1;
 int size = 10;
 
 element stack[36];
-offsets move[8];
-int exit_row = 5, exit_col = 5;
-
-void Move(offsets move[]) {
-    move[0].vert = -1; move[0].horiz = 0;   // N     
-    move[1].vert=-1; move[1].horiz=1;   // NE 
-    move[2].vert=0; move[2].horiz=1;    // E     
-    move[3].vert=1; move[3].horiz=1;    // SE   
-    move[4].vert=1; move[4].horiz=0;    // S     
-    move[5].vert=1; move[5].horiz=-1;   // SW 
-    move[6].vert=0; move[6].horiz=-1;   // W     
-    move[7].vert=-1; move[7].horiz=-1;  // NW 
-}
 
 void push(int val) {
     if (!isFull())
@@ -74,14 +61,7 @@ int mark[6][6] = {0,};
 
 void miroPath() {
     int i, j;
-
-    for (i = 0; i < 6; i++) {
-        for (j = 0; j < 6; j++) {
-            if (maze[i][j] == 0)
-                mark[i][j] = 1;
-        }
-    }
-
+    int exit_row = 5, exit_col = 5;
     bool found = false;
     element position;
     mark[0][0] = 1;
@@ -116,10 +96,23 @@ void miroPath() {
             else
                 ++dir;
          }
+        for (i = 0; i < 6; i++) {
+            for (j = 0; j < 6; j++) {
+                if (maze[i][j] == 0)
+                    mark[i][j] = 1;
+            }
+        }
      }
     if (found) {
-        //¹Ì·Î °æ·Î Ãâ·Â
-        //¹æ¹®µÈ matrix Ãâ·Â
+        //ë¯¸ë¡œ ê²½ë¡œ ì¶œë ¥
+        //ë°©ë¬¸ëœ matrix ì¶œë ¥
+        cout << "Marked maze : " << endl;
+        for (i = 0; i < 6; i++) {
+            for (j = 0; j < 6; j++) {
+                cout << mark[i][j];
+            }
+            cout << endl;
+        }
     }
     else
         cout << "The maze does not have a path" << endl;
@@ -127,5 +120,17 @@ void miroPath() {
 
 
 int main() {
+
+    offsets move[8];
+
+    move[0].vert = -1; move[0].horiz = 0;   // N     
+    move[1].vert = -1; move[1].horiz = 1;   // NE 
+    move[2].vert = 0; move[2].horiz = 1;    // E     
+    move[3].vert = 1; move[3].horiz = 1;    // SE   
+    move[4].vert = 1; move[4].horiz = 0;    // S     
+    move[5].vert = 1; move[5].horiz = -1;   // SW 
+    move[6].vert = 0; move[6].horiz = -1;   // W     
+    move[7].vert = -1; move[7].horiz = -1;  // NW 
+
     miroPath();
 }
