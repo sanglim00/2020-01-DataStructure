@@ -18,11 +18,11 @@ struct offsets {
     int vert, horiz;
 };
 int maze[6][6] = { 0,1,1,1,1,1,  
-                   1,0,1,1,1,1,  
-                   1,0,0,0,0,1, 
-                   1,1,0,1,1,1,  
-                   1,0,1,0,0,1,  
-                   1,1,1,1,1,0 
+                              1,0,1,1,1,1,  
+                              1,0,0,0,0,1, 
+                              1,1,0,1,1,1,  
+                              1,0,1,0,0,1,  
+                              1,1,1,1,1,0 
 };
 int mark[6][6] = { 0,};
 
@@ -30,22 +30,23 @@ int top = -1;
 int maxSize = 10;
 element stack[10];
 
-bool isEmpty() {
-    if (top == -1) return true;
-    else return false;
+element isEmpty() {
+    element position;
+    position = { -1, -1, -1 };
+    cout << "Stack is Empty" << endl;
 }
-bool isFull() {
-    if (top == maxSize - 1) return true;
-    else return false;
+void isFull() {
+    cout << "Stack is Full" << endl;
 }
-void push(int a, int b,  int c) {
-    if (!isFull())
-        stack[++top] = {a, b, c};
-    else cout << "Stack is Full" << endl;
+void push(element position) {
+    if (top >= maxSize)
+        isFull();
+    stack[++top] = position;
 }
 element pop(int *top) {
-    if (!isEmpty()) 
-        return stack[*top--];     
+    if (*top == -1)
+        return isEmpty();
+    return stack[(*top)--];
 }
 
 void miroPath(offsets move[]) {
@@ -72,7 +73,7 @@ void miroPath(offsets move[]) {
             else if (!maze[next_row][next_col] && !mark[next_row][next_col]) {
                 mark[next_row][next_col] = 1;
                 position = { row, col, ++dir };
-                push(position.row, position.col, position.dir);
+                push(position);
                 row = next_row; col = next_col; dir = 0;
             }
             else
