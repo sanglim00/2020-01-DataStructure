@@ -18,11 +18,11 @@ struct offsets {
     int vert, horiz;
 };
 int maze[6][6] = { 0,1,1,1,1,1,  
-                            1,0,1,1,1,1,  
-                            1,0,0,0,0,1, 
-                            1,1,0,1,1,1,  
-                            1,0,1,0,0,1,  
-                            1,1,1,1,1,0 
+                   1,0,1,1,1,1,  
+                   1,0,0,0,0,1, 
+                   1,1,0,1,1,1,  
+                   1,0,1,0,0,1,  
+                   1,1,1,1,1,0 
 };
 int mark[6][6] = { 0,};
 
@@ -43,9 +43,9 @@ void push(int a, int b,  int c) {
         stack[++top] = {a, b, c};
     else cout << "Stack is Full" << endl;
 }
-int  pop() {
-    if (!isEmpty())
-        return stack[top--];
+element pop(int *top) {
+    if (!isEmpty()) 
+        return stack[*top--];     
 }
 
 void miroPath(offsets move[]) {
@@ -67,15 +67,12 @@ void miroPath(offsets move[]) {
         while (dir < 8 && !found) {
             next_row = row + move[dir].vert;
             next_col = col + move[dir].horiz;
-
             if (next_row == exit_row && next_col == exit_col)
                 found = true;
             else if (!maze[next_row][next_col] && !mark[next_row][next_col]) {
                 mark[next_row][next_col] = 1;
                 position = { row, col, ++dir };
-
                 push(position.row, position.col, position.dir);
-
                 row = next_row; col = next_col; dir = 0;
             }
             else
@@ -85,6 +82,7 @@ void miroPath(offsets move[]) {
     if (found) {
         //miroPath 출력
         cout << "The path is : " << endl;
+       
         //marked matrix 출력
         cout << "Marked Matrix : " << endl;
         for (int i = 0; i < 6; i++) {
@@ -95,7 +93,7 @@ void miroPath(offsets move[]) {
         }
     }
     else
-        cout << "The maze does not have a path\n" << endl;
+        cout << "The maze does not have a path. \n" << endl;
     
 }
 int main() {
