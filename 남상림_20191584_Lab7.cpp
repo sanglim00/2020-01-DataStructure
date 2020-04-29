@@ -35,11 +35,14 @@ char LinkedStack::pop() {
 	Node* p;
 	char input;
 
-	input = head->data;
-	p = head;
-	head = head->next;
-	delete p;
-	return input;
+	if (isEmpty()) cout << "Stack is Empty.\n";
+	else {
+		input = head->data;
+		p = head;
+		head = head->next;
+		delete p;
+		return input;
+	}
 }
 bool LinkedStack::isEmpty() {
 	if (head == NULL) return true;
@@ -155,7 +158,7 @@ void SortList::invert() {
 		q = p;
 		p = p->next;
 		q->next = r;
-	}
+	 }
 	head = q;
 }
 
@@ -165,9 +168,9 @@ void SortList::display() {
 	if (head != NULL) {
 		p = head;
 		while (p != NULL) {
-			cout << p->data;
+			cout << p->data << " ";
 			p = p->next;
-		}
+		 }
 		cout << endl;
 	}
 	else cout << "List is Empty.\n";
@@ -177,7 +180,8 @@ int main() {
 	LinkedQueue Qlist;
 	SortList sortlist;
 
-	int choice= 0, input;
+	int choice;
+	char input;
 
 	while (true) {
 		cout << "1. push 2. pop 3.printStack 4.enqueue 5.dequeue 6. printQueue 7.Merge  8.Invert 9.printList 10.quit  choice : ";
@@ -190,11 +194,11 @@ int main() {
 			Slist.push(input);
 			break;
 		case 2:
-			Slist.pop();
-			cout << " is popped.\n";
+			cout << Slist.pop();
+			cout << " --> is popped.\n";
 			break;
 		case 3:
-			cout << "List 1 (Stack) : ";
+			cout << "Stack : ";
 			Slist.display();
 			break;
 		case 4:
@@ -203,19 +207,25 @@ int main() {
 			Qlist.enqueue(input);
 			break;
 		case 5:
-			Qlist.dequeue();
-			cout << " is dequed.\n";
+			cout << Qlist.dequeue();
+			cout << " --> is dequed.\n";
 			break;
 		case 6:
-			cout << "List 2 (Queue) : ";
+			cout << "Queue : ";
 			Qlist.display();
 			break;
 		case 7:
 			sortlist.concatenate(Slist, Qlist);
+			cout << "List : ";
+			sortlist.display();
+			break;
 		case 8:
 			sortlist.invert();
+			cout << "List : ";
+			sortlist.display();
 			break;
 		case 9:
+			cout << "List : ";
 			sortlist.display();
 			break;
 		case 10:
