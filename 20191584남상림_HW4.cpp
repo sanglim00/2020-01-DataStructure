@@ -90,7 +90,7 @@ void List::InsertFirst(int data) {
 void List::InsertLast(int data) {
 	Node* temp = new Node(data);
 	Node* p;
-	if (head == NULL) head == temp;
+	if (head == NULL) head = temp;
 	else {
 		p = head;
 		while (p->next != 0) p = p->next;
