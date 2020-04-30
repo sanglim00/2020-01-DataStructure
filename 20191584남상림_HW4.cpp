@@ -128,7 +128,7 @@ void List::LocateCurrent(int data) {
 		p = head;
 		while (p != 0 && p->data != data) {
 			p = p->next;
-			if (p != 0) { cout << data << "* " << " " << p->data << endl; break; }
+			if (p != 0) { cout << data << " " << "* " << " " << p->data << endl; break; }
 		 }
 		current = p;
 	}
