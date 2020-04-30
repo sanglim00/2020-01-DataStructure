@@ -41,7 +41,7 @@ int List::ListLength() {
 	while (p) {
 		p = p->next;
 		count++;
-	}
+	 }
 	return count;
 }
 bool List::isEmpty() {
@@ -107,7 +107,6 @@ void List::DeleteCurrent() {
 		head = head->next;
 		head->prev = 0;
 		delete p;
-		current = head;
 	}
 	else {
 		q = head; p = head;
@@ -117,26 +116,25 @@ void List::DeleteCurrent() {
 			q->next = p->next;
 			if (p->next != 0) p->next->prev = q;
 			delete p;
-			current = head;
 		}
 		else cout << current->data << "is not in the list\n";
 	}
+	current = head;
 }
 void List::LocateCurrent(int data) {
 	Node* p;
 	if (head == NULL) cout << "List is Empty.\n";
 	else if (ListLength() >= data) {
 		p = head;
-		while (p != 0 && p->data != current->data) {
+		while (p != 0 && p->data != data) {
 			p = p->next;
+			if (p != 0) { cout << data << "* " << " " << p->data << endl; break; }
 		 }
-		cout << p->data;
 		current = p;
 	}
 	else {
 		cout << "No such a Line.\n";
 	}
-	
 }
 void List::UpdateCurrent(int data) {
 	current->data = data;
@@ -213,9 +211,7 @@ int main() {
 			lst.Display();
 			break;
 		case 8:
-			lst.DeleteCurrent();
-			cout << "---------List---------\n";
-			lst.Display();
+			lst.DisplayCurrent();
 			break;
 		case 9:
 			cout << "---------List---------\n";
@@ -225,5 +221,4 @@ int main() {
 			return 0;
 		}
 	 }
-	
 }
