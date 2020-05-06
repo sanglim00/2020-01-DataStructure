@@ -185,12 +185,11 @@ int main() {
     cout << "Enter Expression 2: ";
     cin >> str;
     for (int i = 0; i < str.length(); i++)
-        if (myTree2.NotP(str[i]))
+        if (myTree2.NotP(str[i]) && str[i]!=' ')
             myTree2.buildTree(str[i]);
 
     myTree2.display(1);
     myTree2.display(2);
     myTree2.display(3);
-
 
 }
