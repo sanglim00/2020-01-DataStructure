@@ -27,7 +27,6 @@ public:
 	void NumOfNodes();
 	int leaves(Node*, int);
 	int NonLeaves(Node*, int);
-	Node* findMin(Node*);
 	Node* findMax(Node*);
 	void drawTree();
 	void drawBST(Node*, int);
@@ -37,17 +36,12 @@ void Tree::insertT(int data) {
 	insertBST(root, data);
 }
 Node* Tree::insertBST(Node* ptr, int data) {
-	if (root == NULL) {
-		Node* temp = new Node();
-		temp->data = data;
-		root = temp;
-	}
-	else if (ptr == NULL) {
-		Node* temp = new Node();
-		temp->data = data;
-		temp->left = NULL;
-		temp->right = NULL;
-		return temp;
+	if (ptr == NULL) {
+		ptr = new Node();
+		ptr->data = data;
+		ptr->left = NULL;
+		ptr->right = NULL;
+		if (!root) root = ptr;
 	}
 	else if (data < ptr->data)
 		ptr->left = insertBST(ptr->left, data);
@@ -69,9 +63,12 @@ void Tree::deleteT() {
 }
 Node* Tree::deleteBST(Node* ptr, int data) {
 	if (ptr != NULL) {
-		if (data < ptr->data) ptr->left = deleteBST(ptr->left, data);
-		else if (data > ptr->data) ptr->right = deleteBST(ptr->right, data);
-		else if (ptr->left == NULL && ptr->right == NULL) ptr = NULL;
+		if (data < ptr->data) 
+			ptr->left = deleteBST(ptr->left, data);
+		else if (data > ptr->data) 
+			ptr->right = deleteBST(ptr->right, data);
+		else if (ptr->left == NULL && ptr->right == NULL) 
+			ptr = NULL;
 		else if (ptr->left == NULL) {
 			Node* p = ptr;
 			ptr = ptr->right;
@@ -83,22 +80,25 @@ Node* Tree::deleteBST(Node* ptr, int data) {
 			delete(p);
 		}
 		else {
-			Node* temp = findMax(ptr->left);
+			Node* temp = findMax(ptr->right);
 			ptr->data = temp->data;
-			ptr->left = deleteBST(ptr->left, ptr->data);
+			ptr->right = deleteBST(ptr->right, ptr->data);
 		}
 	}
 	else cout << "Not Found" << endl;
 	return ptr;
 }
 void Tree::searchT() {
-	int num;
-	Node* temp = root;
-	if(temp ==NULL) cout << "Tree is Empty" << endl;
+	if(root == NULL) cout << "Tree is Empty" << endl;
 	else {
+		int num;
 		cout << "Enter number to Search : ";
 		cin >> num;
-		searchBST(temp, num);
+		Node* ptr = root;
+		if (searchBST(ptr, num) != NULL)
+			cout << num << "  is found in the tree" << endl;
+		else
+			cout << "Not Found" << std::endl;
 	}
 }
 
@@ -108,16 +108,16 @@ Node* Tree::searchBST(Node* ptr, int data) {
 		else if (data < ptr->data) ptr = searchBST(ptr->left, data);
 		else if (data > ptr->data) ptr = searchBST(ptr->right, data);
 	}
-	else return NULL;
-	
-	cout << data << " is is found in the tree"<<endl;
+	else 
+		return NULL;
+
 	return ptr;
 }
 
 void Tree::levelOrder() {
 	int level = 1;
 	Node* temp = root;
-	if (temp == NULL) cout << "Tree is Empty" << endl;
+	if (root == NULL) cout << "Tree is Empty" << endl;
 	else {
 		while (printLevel(temp, level)) level++;
 		cout << endl;
@@ -159,11 +159,6 @@ int Tree::NonLeaves(Node* ptr, int count) {
 	return count;
 }
 
-Node* Tree::findMin(Node* ptr) {
-	if (ptr == NULL)return NULL;
-	else if (ptr->left == NULL) return ptr;
-	else return findMin(ptr->left);
-}
 Node* Tree::findMax(Node* ptr) {
 	if (ptr == NULL) return NULL;
 	else if (ptr->right == NULL) return ptr;
@@ -175,14 +170,14 @@ void Tree::drawTree() {
 }
 void Tree::drawBST(Node* ptr, int level) {
 	if (ptr != NULL && level <= 7) {
-		drawBST(ptr->right, level++);
+		drawBST(ptr->right, level+1);
 		for (int i = 1; i <= (level-1); i++) cout << "   ";
 		cout << ptr->data;
 		if (ptr->left != NULL && ptr->right != NULL) cout << "<" << endl;
-		else if (ptr->right != NULL) cout << "¢Ö" << endl;
-		else if (ptr->left != NULL) cout << " ¢Ù" << endl;
+		else if (ptr->right != NULL) cout << "â†—" << endl;
+		else if (ptr->left != NULL) cout << " â†˜" << endl;
 		else cout << endl;
-		drawBST(ptr->left, level++);
+		drawBST(ptr->left, level+1);
 	}
 }
 
