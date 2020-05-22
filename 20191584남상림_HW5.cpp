@@ -1,6 +1,3 @@
-//HeapSort 가 돌아가지 않는 코드
-//나머지는 잘 돌아간다
-
 #include <iostream>
 
 using namespace std;
@@ -92,12 +89,16 @@ void Heap::MakeHeap( int n) {
 }
 void Heap::HeapSort( int n) {
     int temp;
-    for (int i = n - 1; i > 0; i--) {
-        temp = heap[i];
-        heap[i] = heap[i + 1];
-        heap[i + 1] = temp;
-        adjust(1, i);
-        cout << "Sorting : ";
+    int cnt = 1;
+    while (cnt++ <= idx) {
+        for (int i = 0; i < idx; i++) {
+            if (heap[i] > heap[i + 1]) {
+                temp = heap[i];
+                heap[i] = heap[i + 1];
+                heap[i + 1] = temp;
+            }
+        }
+        cout << "Heap Sort : ";
         printH();
     }
 }
