@@ -31,7 +31,7 @@ public:
 void Graph::InitGraph() {
 	for (int i = 0; i < max; i++) {
 		graph[i] = NULL;
-		visited[i] = 0;
+		visited[i] = false;
 	}
 }
 void Graph::InsertGraph(int num, int num2) {
@@ -58,6 +58,8 @@ void Graph::DisplayGraph() {
 	for (int i = 0; i < max; i++) {
 		if (graph[i] != NULL) {
 			Node* p = graph[i];
+			cout << "  graph[" << p->data << "] => ";
+			p = p->link;
 			for (p; p != NULL; p=p->link) cout << p->data << " ";
 			cout << endl;
 		}
@@ -86,8 +88,9 @@ int main() {
 	}
 	cout << "<<    Graph Data 1    >>\n" << endl;
 	G.DisplayGraph();
-	cout << "\nDepth First Search Result : " << endl;
+	cout << "\nDepth First Search Result : " ;
 	G.DFS(0);
+
 	cout <<"\n\n--------------------------\n"<< endl;
 
 	G.InitGraph();
@@ -101,7 +104,7 @@ int main() {
 	}
 	cout << "<<    Graph Data 2    >>\n" << endl;
 	G.DisplayGraph();
-	cout << "\nDepth First Search Result : " << endl;
+	cout << "\nDepth First Search Result : " ;
 	G.DFS(0);
 	cout << endl;
 }
