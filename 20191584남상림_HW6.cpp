@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int max = 8;
+const int max = 10;
 
 class Node {
 private:
@@ -68,7 +68,7 @@ void Graph::DisplayGraph() {
 void Graph::DFS(int v) {
 	Node* w;
 	visited[v] = true;
-	cout << v << " -> ";
+	cout << "V" << v << " -> ";
 	for (w = graph[v]; w != NULL; w = w->link)
 		if (!visited[w->data]) DFS(w->data);
 }
