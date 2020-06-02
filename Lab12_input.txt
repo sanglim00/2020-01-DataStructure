@@ -1,0 +1,9 @@
+A 5 B
+A 12 D
+B 6 C
+B 10 D
+B 24 E
+C 17 D
+C 30 F
+D 20 E
+E 13 F
