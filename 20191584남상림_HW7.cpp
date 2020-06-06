@@ -20,6 +20,7 @@ struct Node {
 	char data;
 	char cost;
 	char data2;
+	Node* next;
 };
 
 class Graph {
@@ -32,7 +33,7 @@ public:
 	void InitVisited();
 	void InsertData();
 	void SortedData();
-	void KruskalAlgorithm();
+	void KruskalAlgorithm(int);
 	void PrintData();
 };
 
@@ -57,8 +58,16 @@ void Graph::SortedData() {
 		}
 	}
 }
-void Graph::KruskalAlgorithm() {
+
+void Graph::KruskalAlgorithm(int v) {
+	SortedData();
+	InitVisited();
 	
+	for (int i = 0; i < max; i++) {
+		
+	}
+	
+	cout << "\n4. Total Cost : " << totalCost << endl;
 }
 
 void Graph::PrintData() {
@@ -84,7 +93,7 @@ int main() {
 	cout << endl;
 
 	cout << "3. Kruskal's MST : " << endl;
-	cout << endl;
+	myG.KruskalAlgorithm(0);
 
-	cout << "4. Total Cost : " << endl;
+	return 0;
 }
