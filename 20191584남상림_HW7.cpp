@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -18,22 +19,24 @@ char DataList[10][3] = { 'A', '6', 'B',
 
 struct Node {
 	char data;
-	char cost;
+	int cost;
 	char data2;
 	Node* next;
 };
+
+Node graph[max];
 
 class Graph {
 private:
 	int totalCost = 0;
 	int edge = 0;
 	bool visited[max];
-	Node graph[max];
 public:
 	void InitVisited();
 	void InsertData();
 	void SortedData();
-	void KruskalAlgorithm(int);
+	bool CheckCycle(int);
+	void KruskalAlgorithm();
 	void PrintData();
 };
 
@@ -43,7 +46,7 @@ void Graph::InitVisited() {
 void Graph::InsertData() {
 	for (int i = 0; i < max; i++) {
 		graph[i].data = DataList[i][0];
-		graph[i].cost = DataList[i][1];
+		graph[i].cost = DataList[i][1]-'0';
 		graph[i].data2 = DataList[i][2];
 	}
 }
@@ -59,14 +62,30 @@ void Graph::SortedData() {
 	}
 }
 
-void Graph::KruskalAlgorithm(int v) {
+vector<char> V;
+
+bool Graph::CheckCycle(int idx) {
+	
+
+}
+
+void Graph::KruskalAlgorithm() {
 	SortedData();
 	InitVisited();
-	
-	for (int i = 0; i < max; i++) {
-		
+
+	V.push_back(graph[0].data);
+	V.push_back(graph[0].data2);
+	totalCost += graph[0].cost;
+	cout << "Edge " << 1 << " : " << graph[0].data << " " << graph[0].cost << " " << graph[0].data2 << endl;
+	for (int i = 1; i < max; i++) {
+		if (!CheckCycle(i)) {
+			V.push_back(graph[i].data);
+			V.push_back(graph[i].data2);
+			totalCost += graph[i].cost;
+			cout<<"Edge "<<i+1<<" : "<< graph[i].data << " " << graph[i].cost << " " << graph[i].data2 << endl;
+		}
 	}
-	
+
 	cout << "\n4. Total Cost : " << totalCost << endl;
 }
 
@@ -93,7 +112,7 @@ int main() {
 	cout << endl;
 
 	cout << "3. Kruskal's MST : " << endl;
-	myG.KruskalAlgorithm(0);
+	myG.KruskalAlgorithm();
 
 	return 0;
 }
