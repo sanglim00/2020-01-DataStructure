@@ -29,19 +29,26 @@ Node graph[max];
 class Graph {
 private:
 	int totalCost = 0;
-	int edge = 0;
-	bool visited[max];
+	int edge;
+	Node* head;
+	int* visited;
 public:
-	void InitVisited();
+	Graph(int);
+	void initvisited();
 	void InsertData();
 	void SortedData();
-	bool CheckCycle(int);
+	bool CheckCycle();
 	void KruskalAlgorithm();
 	void PrintData();
 };
+Graph::Graph(int num) {
+	head = NULL;
+	edge = num;
+	visited = new int[edge];
+}
 
-void Graph::InitVisited() {
-	for (int i = 0; i < max; i++) visited[i] = false;
+void Graph::initvisited() {
+	for (int i = 0; i < edge; i++) visited[i] = i;
 }
 void Graph::InsertData() {
 	for (int i = 0; i < max; i++) {
@@ -61,29 +68,65 @@ void Graph::SortedData() {
 		}
 	}
 }
-
-vector<char> V;
-
-bool Graph::CheckCycle(int idx) {
-	
-
+bool Graph::CheckCycle() {
+	Node* p = head;
+	int count = 0;
+	while (p) {
+		p = p->next;
+		count++;
+	}
+	if (count == edge - 1) return true;
+	else return false;
 }
 
 void Graph::KruskalAlgorithm() {
 	SortedData();
-	InitVisited();
+	initvisited();
+	int index = 0;
 
-	V.push_back(graph[0].data);
-	V.push_back(graph[0].data2);
-	totalCost += graph[0].cost;
-	cout << "Edge " << 1 << " : " << graph[0].data << " " << graph[0].cost << " " << graph[0].data2 << endl;
-	for (int i = 1; i < max; i++) {
-		if (!CheckCycle(i)) {
-			V.push_back(graph[i].data);
-			V.push_back(graph[i].data2);
-			totalCost += graph[i].cost;
-			cout<<"Edge "<<i+1<<" : "<< graph[i].data << " " << graph[i].cost << " " << graph[i].data2 << endl;
+	while (!CheckCycle()) {
+		if (visited[graph[index].data - 65] > visited[graph[index].data2 - 65]) {
+			int chk = visited[graph[index].data2];
+			for (int j = 0; j < max; j++) {
+				if (visited[j] == chk) visited[j] = visited[graph[index].data2 - 65];
+			}
+			totalCost += graph[index].cost;
+			Node* temp = new Node();
+			temp->data = graph[index].data;
+			temp->cost = graph[index].cost;
+			temp->data2 = graph[index].data2;
+			if (head == NULL) head = temp;
+			else {
+				Node* p = head;
+				while (p->next) p = p->next;
+				p->next = temp;
+			}
 		}
+		else if (visited[(graph[index].data) - 65] < visited[(graph[index].data2) - 65]) {
+			int chk = visited[graph[index].data2 - 65];
+			for (int j = 0; j < max; j++) {
+				if (visited[j] == chk) visited[j] = visited[graph[index].data - 65];
+			}
+			totalCost += graph[index].cost;
+			Node* temp = new Node();
+			temp->data = graph[index].data;
+			temp->cost = graph[index].cost;
+			temp->data2 = graph[index].data2;
+			if (head == NULL) head = temp;
+			else {
+				Node* p = head;
+				while (p->next) p = p->next;
+				p->next = temp;
+			}
+		}
+		index++;
+	}
+
+	Node* p = head;
+	int i = 1;
+	while (p != NULL) {
+		cout << "Edge " << i++ << " : " << p->data << " "<< p->cost << " "<< p->data2 << endl;
+		p = p->next;
 	}
 
 	cout << "\n4. Total Cost : " << totalCost << endl;
@@ -99,7 +142,7 @@ void Graph::PrintData() {
 }
 
 int main() {
-	Graph myG;
+	Graph myG(6);
 
 	myG.InsertData();
 	cout << "1. Input Data : " << endl;
