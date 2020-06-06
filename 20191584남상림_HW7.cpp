@@ -1,10 +1,8 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
 const int max = 10;
-
 char DataList[10][3] = { 'A', '6', 'B',
 			'B', '7', 'C',
 			'A', '1', 'C',
@@ -39,6 +37,7 @@ public:
 	void SortedData();
 	bool CheckCycle();
 	void KruskalAlgorithm();
+	void PrintTotalCost();
 	void PrintData();
 };
 Graph::Graph(int num) {
@@ -83,6 +82,7 @@ void Graph::KruskalAlgorithm() {
 	SortedData();
 	initvisited();
 	int index = 0;
+	Node* temp;
 
 	while (!CheckCycle()) {
 		if (visited[graph[index].data - 65] > visited[graph[index].data2 - 65]) {
@@ -91,7 +91,7 @@ void Graph::KruskalAlgorithm() {
 				if (visited[j] == chk) visited[j] = visited[graph[index].data2 - 65];
 			}
 			totalCost += graph[index].cost;
-			Node* temp = new Node();
+			temp = new Node();
 			temp->data = graph[index].data;
 			temp->cost = graph[index].cost;
 			temp->data2 = graph[index].data2;
@@ -108,7 +108,7 @@ void Graph::KruskalAlgorithm() {
 				if (visited[j] == chk) visited[j] = visited[graph[index].data - 65];
 			}
 			totalCost += graph[index].cost;
-			Node* temp = new Node();
+			temp = new Node();
 			temp->data = graph[index].data;
 			temp->cost = graph[index].cost;
 			temp->data2 = graph[index].data2;
@@ -128,8 +128,9 @@ void Graph::KruskalAlgorithm() {
 		cout << "Edge " << i++ << " : " << p->data << " "<< p->cost << " "<< p->data2 << endl;
 		p = p->next;
 	}
-
-	cout << "\n4. Total Cost : " << totalCost << endl;
+}
+void Graph::PrintTotalCost() {
+	cout << totalCost << endl;
 }
 
 void Graph::PrintData() {
@@ -156,6 +157,7 @@ int main() {
 
 	cout << "3. Kruskal's MST : " << endl;
 	myG.KruskalAlgorithm();
-
+	cout << "\n4. Total Cost : ";
+	myG.PrintTotalCost();
 	return 0;
 }
